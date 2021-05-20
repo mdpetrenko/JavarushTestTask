@@ -1,5 +1,7 @@
 package com.game.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -19,10 +21,12 @@ public class Player {
     private String title;
 
     @Column
-    private String race;
+    @Enumerated(EnumType.STRING)
+    private Race race;
 
     @Column
-    private String profession;
+    @Enumerated(EnumType.STRING)
+    private Profession profession;
 
     @Column
     private Integer experience;
@@ -34,6 +38,7 @@ public class Player {
     private Integer untilNextLevel;
 
     @Column
+    @DateTimeFormat
     private Date birthday;
 
     @Column
@@ -63,19 +68,19 @@ public class Player {
         this.title = title;
     }
 
-    public String getRace() {
+    public Race getRace() {
         return race;
     }
 
-    public void setRace(String race) {
+    public void setRace(Race race) {
         this.race = race;
     }
 
-    public String getProfession() {
+    public Profession getProfession() {
         return profession;
     }
 
-    public void setProfession(String profession) {
+    public void setProfession(Profession profession) {
         this.profession = profession;
     }
 
