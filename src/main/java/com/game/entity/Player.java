@@ -19,10 +19,10 @@ public class Player {
     private String title;
 
     @Column
-    private Race race;
+    private String race;
 
     @Column
-    private Profession profession;
+    private String profession;
 
     @Column
     private Integer experience;
@@ -63,19 +63,19 @@ public class Player {
         this.title = title;
     }
 
-    public Race getRace() {
+    public String getRace() {
         return race;
     }
 
-    public void setRace(Race race) {
+    public void setRace(String race) {
         this.race = race;
     }
 
-    public Profession getProfession() {
+    public String getProfession() {
         return profession;
     }
 
-    public void setProfession(Profession profession) {
+    public void setProfession(String profession) {
         this.profession = profession;
     }
 
