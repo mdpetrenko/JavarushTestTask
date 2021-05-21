@@ -5,11 +5,13 @@ import com.game.entity.Profession;
 import com.game.entity.Race;
 import com.game.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/rest/players")
@@ -65,6 +67,18 @@ public class PlayerController {
     @GetMapping("/{id}")
     public Player findById(@PathVariable Long id) {
         return playerService.findById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void removeById(@PathVariable Long id) {
+        if (id < 1) {
+            throw new NumberFormatException();
+        }
+        try {
+            playerService.delete(id);
+        } catch (Exception e) {
+            throw new NoSuchElementException();
+        }
     }
 
 }

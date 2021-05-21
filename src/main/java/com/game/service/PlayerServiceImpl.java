@@ -8,11 +8,13 @@ import com.game.repository.PlayerRepository;
 import com.game.repository.PlayerSpecification;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.NoSuchElementException;
+import java.util.function.Supplier;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
@@ -24,24 +26,13 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player findById(Long id) {
-        if (id < 1) throw new NumberFormatException("Not a valid id. Must be Integer > 0");
-        return playerRepository.findById(id).orElseThrow(NumberFormatException::new);
-    }
-
-    @Override
     public List<Player> findAll(String name, String title, Race race, Profession profession, Long after, Long before,
                                 Boolean banned, Long minExp, Long maxExp, Long minLevel,
                                 Long maxLevel, PlayerOrder order, Integer pageNumber, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Specification<Player> playerSpecification =
-                Objects.requireNonNull(PlayerSpecification.nameAndTitleSpec(name, title)
-                        .and(PlayerSpecification.betweenSpec("experience", minExp, maxExp))
-                        .and(PlayerSpecification.betweenSpec("level", minLevel, maxLevel)))
-                        .and(PlayerSpecification.dateBetween(after, before))
-                        .and(PlayerSpecification.equalSpec("banned", banned))
-                        .and(PlayerSpecification.equalSpec("race", race))
-                        .and(PlayerSpecification.equalSpec("profession", profession));
+        String orderBy = order == null ? PlayerOrder.ID.getFieldName() : order.getFieldName();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, orderBy));
+
+        Specification<Player> playerSpecification = getPlayerSpecification(name, title, race, profession, after, before, banned, minExp, maxExp, minLevel, maxLevel);
         return playerRepository.findAll(playerSpecification, pageable).getContent();
     }
 
@@ -49,15 +40,32 @@ public class PlayerServiceImpl implements PlayerService {
     public Long count(String name, String title, Race race, Profession profession, Long after, Long before,
                       Boolean banned, Long minExp, Long maxExp, Long minLevel,
                       Long maxLevel) {
-        Specification<Player> playerSpecification =
-                Objects.requireNonNull(PlayerSpecification.nameAndTitleSpec(name, title)
-                        .and(PlayerSpecification.betweenSpec("experience", minExp, maxExp)))
-                        .and(PlayerSpecification.betweenSpec("level", minLevel, maxLevel))
-                        .and(PlayerSpecification.betweenSpec("birthday", after, before))
-                        .and(PlayerSpecification.equalSpec("banned", banned))
-                        .and(PlayerSpecification.equalSpec("race", race))
-                        .and(PlayerSpecification.equalSpec("profession", profession));
+        Specification<Player> playerSpecification = getPlayerSpecification(name, title, race, profession,
+                after, before, banned, minExp, maxExp, minLevel, maxLevel);
         return playerRepository.count(playerSpecification);
+    }
+
+    @Override
+    public Player findById(Long id) {
+        if (id < 1) throw new NumberFormatException("Not a valid id. Must be Integer > 0");
+        return playerRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public void delete(Long id) {
+        playerRepository.deleteById(id);
+    }
+
+    private Specification<Player> getPlayerSpecification(String name, String title, Race race, Profession profession,
+                                                         Long after, Long before, Boolean banned,
+                                                         Long minExp, Long maxExp, Long minLevel, Long maxLevel) {
+        return PlayerSpecification.nameAndTitleSpec(name, title)
+                .and(PlayerSpecification.betweenSpec("experience", minExp, maxExp))
+                .and(PlayerSpecification.betweenSpec("level", minLevel, maxLevel))
+                .and(PlayerSpecification.dateBetween(after, before))
+                .and(PlayerSpecification.equalSpec("banned", banned))
+                .and(PlayerSpecification.equalSpec("race", race))
+                .and(PlayerSpecification.equalSpec("profession", profession));
     }
 
 }

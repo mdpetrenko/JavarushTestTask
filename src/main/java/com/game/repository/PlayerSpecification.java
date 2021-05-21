@@ -37,13 +37,6 @@ public class PlayerSpecification {
         return null;
     }
 
-    public static Specification<Player> banSpec(final Boolean banned) {
-        if (banned != null) {
-            return (r, cq, cb) -> cb.equal(r.get("banned"), banned);
-        }
-        return null;
-    }
-
     public static Specification<Player> equalSpec(final String title, final Object obj) {
         if (obj != null) {
             return (r, cq, cb) -> cb.equal(r.get(title), obj);

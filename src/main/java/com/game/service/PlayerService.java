@@ -19,4 +19,6 @@ public interface PlayerService {
     Long count(String name, String title, Race race, Profession profession, Long after, Long before,
                   Boolean banned, Long minExperience, Long maxExperience, Long minLevel,
                   Long maxLevel);
+
+    void delete(Long id);
 }

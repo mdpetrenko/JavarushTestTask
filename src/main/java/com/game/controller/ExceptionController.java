@@ -1,5 +1,6 @@
 package com.game.controller;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,13 +11,13 @@ import java.util.NoSuchElementException;
 @ControllerAdvice
 public class ExceptionController {
 
-    @ExceptionHandler(NoSuchElementException.class)
+    @ExceptionHandler({NoSuchElementException.class, EmptyResultDataAccessException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void notFoundException() {
 
     }
 
-    @ExceptionHandler(NumberFormatException.class)
+    @ExceptionHandler({NumberFormatException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void notValidException(Throwable e) {
         System.out.println(e.getMessage());
