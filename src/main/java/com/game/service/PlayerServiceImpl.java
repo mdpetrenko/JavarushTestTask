@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Supplier;
@@ -49,6 +50,32 @@ public class PlayerServiceImpl implements PlayerService {
     public Player findById(Long id) {
         if (id < 1) throw new NumberFormatException("Not a valid id. Must be Integer > 0");
         return playerRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public Player saveOrUpdate(String name, String title, Race race, Profession profession, Long birthday,
+                               Boolean banned, Long experience) {
+        Player player = new Player();
+        player.setName(name);
+        player.setTitle(title);
+        player.setRace(race);
+        player.setProfession(profession);
+        player.setBirthday(new Date(birthday));
+        player.setBanned(banned != null && banned);
+        player.setExperience(experience);
+        player.computeLevel();
+        player.computeUntilNextLevel();
+        playerRepository.save(player);
+        return player;
+    }
+
+    @Override
+    public Player saveOrUpdate(Player player) {
+        player.computeBanned();
+        player.computeLevel();
+        player.computeUntilNextLevel();
+        playerRepository.save(player);
+        return player;
     }
 
     @Override

@@ -123,4 +123,16 @@ public class Player {
     public void setBanned(Boolean banned) {
         this.banned = banned;
     }
+
+    public void computeBanned() {
+        if (this.banned == null) banned = false;
+    }
+
+    public void computeLevel() {
+        setLevel(((long) (Math.sqrt(2500 + 200 * experience)) - 50) / 100);
+    }
+
+    public void computeUntilNextLevel() {
+        setUntilNextLevel ((int) (50 * (level + 1)*(level + 2) - experience));
+    }
 }
