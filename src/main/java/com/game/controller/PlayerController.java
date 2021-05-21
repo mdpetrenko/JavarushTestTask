@@ -33,8 +33,8 @@ public class PlayerController {
             @RequestParam(required = false) Boolean banned,
             @RequestParam(required = false) Long minExperience,
             @RequestParam(required = false) Long maxExperience,
-            @RequestParam(defaultValue = "0") Long minLevel,
-            @RequestParam(defaultValue = "2147483647") Long maxLevel,
+            @RequestParam(required = false) Long minLevel,
+            @RequestParam(required = false) Long maxLevel,
             @RequestParam(required = false) PlayerOrder order,
             @RequestParam(defaultValue = "0") Integer pageNumber,
             @RequestParam(defaultValue = "3") Integer pageSize
@@ -55,8 +55,8 @@ public class PlayerController {
             @RequestParam(required = false) Boolean banned,
             @RequestParam(required = false) Long minExperience,
             @RequestParam(required = false) Long maxExperience,
-            @RequestParam(defaultValue = "0") Long minLevel,
-            @RequestParam(defaultValue = "2147483647") Long maxLevel
+            @RequestParam(required = false) Long minLevel,
+            @RequestParam(required = false) Long maxLevel
     ) {
         return playerService.count(name, title, race, profession, after, before, banned, minExperience, maxExperience,
                 minLevel, maxLevel);

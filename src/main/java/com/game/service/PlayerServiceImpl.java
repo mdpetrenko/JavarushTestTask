@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
@@ -34,9 +35,9 @@ public class PlayerServiceImpl implements PlayerService {
                                 Long maxLevel, PlayerOrder order, Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Specification<Player> playerSpecification =
-                PlayerSpecification.nameAndTitleSpec(name, title)
+                Objects.requireNonNull(PlayerSpecification.nameAndTitleSpec(name, title)
                         .and(PlayerSpecification.betweenSpec("experience", minExp, maxExp))
-                        .and(PlayerSpecification.betweenSpec("level", minLevel, maxLevel))
+                        .and(PlayerSpecification.betweenSpec("level", minLevel, maxLevel)))
                         .and(PlayerSpecification.dateBetween(after, before))
                         .and(PlayerSpecification.equalSpec("banned", banned))
                         .and(PlayerSpecification.equalSpec("race", race))
@@ -49,8 +50,8 @@ public class PlayerServiceImpl implements PlayerService {
                       Boolean banned, Long minExp, Long maxExp, Long minLevel,
                       Long maxLevel) {
         Specification<Player> playerSpecification =
-                PlayerSpecification.nameAndTitleSpec(name, title)
-                        .and(PlayerSpecification.betweenSpec("experience", minExp, maxExp))
+                Objects.requireNonNull(PlayerSpecification.nameAndTitleSpec(name, title)
+                        .and(PlayerSpecification.betweenSpec("experience", minExp, maxExp)))
                         .and(PlayerSpecification.betweenSpec("level", minLevel, maxLevel))
                         .and(PlayerSpecification.betweenSpec("birthday", after, before))
                         .and(PlayerSpecification.equalSpec("banned", banned))
