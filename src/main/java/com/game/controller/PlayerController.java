@@ -7,6 +7,8 @@ import com.game.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -28,11 +30,11 @@ public class PlayerController {
             @RequestParam(required = false) Profession profession,
             @RequestParam(required = false) Long after,
             @RequestParam(required = false) Long before,
-            @RequestParam(defaultValue = "false") Boolean banned,
-            @RequestParam(required = false) Integer minExperience,
-            @RequestParam(required = false) Integer maxExperience,
-            @RequestParam(required = false) Integer minLevel,
-            @RequestParam(required = false) Integer maxLevel,
+            @RequestParam(required = false) Boolean banned,
+            @RequestParam(required = false) Long minExperience,
+            @RequestParam(required = false) Long maxExperience,
+            @RequestParam(defaultValue = "0") Long minLevel,
+            @RequestParam(defaultValue = "2147483647") Long maxLevel,
             @RequestParam(required = false) PlayerOrder order,
             @RequestParam(defaultValue = "0") Integer pageNumber,
             @RequestParam(defaultValue = "3") Integer pageSize
@@ -43,24 +45,21 @@ public class PlayerController {
     }
 
     @GetMapping("/count")
-    public Integer count(
+    public Long count(
             @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "") String title,
             @RequestParam(required = false) Race race,
             @RequestParam(required = false) Profession profession,
             @RequestParam(required = false) Long after,
             @RequestParam(required = false) Long before,
-            @RequestParam(defaultValue = "false") Boolean banned,
-            @RequestParam(required = false) Integer minExperience,
-            @RequestParam(required = false) Integer maxExperience,
-            @RequestParam(required = false) Integer minLevel,
-            @RequestParam(required = false) Integer maxLevel,
-            @RequestParam(required = false) PlayerOrder order,
-            @RequestParam(defaultValue = "0") Integer pageNumber,
-            @RequestParam(defaultValue = "3") Integer pageSize
+            @RequestParam(required = false) Boolean banned,
+            @RequestParam(required = false) Long minExperience,
+            @RequestParam(required = false) Long maxExperience,
+            @RequestParam(defaultValue = "0") Long minLevel,
+            @RequestParam(defaultValue = "2147483647") Long maxLevel
     ) {
-        return findPlayers(name, title, race, profession, after, before, banned, minExperience, maxExperience,
-                minLevel, maxLevel, order, pageNumber, pageSize).size();
+        return playerService.count(name, title, race, profession, after, before, banned, minExperience, maxExperience,
+                minLevel, maxLevel);
     }
 
     @GetMapping("/{id}")

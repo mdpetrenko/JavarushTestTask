@@ -29,10 +29,10 @@ public class Player {
     private Profession profession;
 
     @Column
-    private Integer experience;
+    private Long experience;
 
     @Column
-    private Integer level;
+    private Long level;
 
     @Column
     private Integer untilNextLevel;
@@ -84,19 +84,19 @@ public class Player {
         this.profession = profession;
     }
 
-    public Integer getExperience() {
+    public Long getExperience() {
         return experience;
     }
 
-    public void setExperience(Integer experience) {
+    public void setExperience(Long experience) {
         this.experience = experience;
     }
 
-    public Integer getLevel() {
+    public Long getLevel() {
         return level;
     }
 
-    public void setLevel(Integer level) {
+    public void setLevel(Long level) {
         this.level = level;
     }
 

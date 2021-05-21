@@ -12,11 +12,11 @@ public interface PlayerService {
     Player findById(Long id);
 
     List<Player> findAll(String name, String title, Race race, Profession profession,
-                         Long after, Long before, Boolean banned, Integer minExperience,
-                         Integer maxExperience, Integer minLevel, Integer maxLevel, PlayerOrder order,
+                         Long after, Long before, Boolean banned, Long minExperience,
+                         Long maxExperience, Long minLevel, Long maxLevel, PlayerOrder order,
                          Integer pageNumber, Integer pageSize);
 
-    Integer count(String name, String title, Race race, Profession profession, Long after, Long before,
-                  Boolean banned, Integer minExperience, Integer maxExperience, Integer minLevel,
-                  Integer maxLevel, PlayerOrder order, Integer pageNumber, Integer pageSize);
+    Long count(String name, String title, Race race, Profession profession, Long after, Long before,
+                  Boolean banned, Long minExperience, Long maxExperience, Long minLevel,
+                  Long maxLevel);
 }
