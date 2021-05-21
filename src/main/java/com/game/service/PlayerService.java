@@ -20,9 +20,6 @@ public interface PlayerService {
                   Boolean banned, Long minExperience, Long maxExperience, Long minLevel,
                   Long maxLevel);
 
-    Player saveOrUpdate(String name, String title, Race race, Profession profession, Long birthday,
-                        Boolean banned, Long experience);
-
     void delete(Long id);
 
     Player saveOrUpdate(Player player);

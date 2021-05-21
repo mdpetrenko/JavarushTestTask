@@ -53,23 +53,6 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player saveOrUpdate(String name, String title, Race race, Profession profession, Long birthday,
-                               Boolean banned, Long experience) {
-        Player player = new Player();
-        player.setName(name);
-        player.setTitle(title);
-        player.setRace(race);
-        player.setProfession(profession);
-        player.setBirthday(new Date(birthday));
-        player.setBanned(banned != null && banned);
-        player.setExperience(experience);
-        player.computeLevel();
-        player.computeUntilNextLevel();
-        playerRepository.save(player);
-        return player;
-    }
-
-    @Override
     public Player saveOrUpdate(Player player) {
         player.computeBanned();
         player.computeLevel();
