@@ -17,7 +17,7 @@ public class ExceptionController {
 
     }
 
-    @ExceptionHandler({NumberFormatException.class})
+    @ExceptionHandler({NumberFormatException.class, IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void notValidException(Throwable e) {
         System.out.println(e.getMessage());

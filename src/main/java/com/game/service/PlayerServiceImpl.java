@@ -54,6 +54,9 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Player saveOrUpdate(Player player) {
+        if (!player.isValid()) {
+            throw new IllegalArgumentException();
+        }
         player.computeBanned();
         player.computeLevel();
         player.computeUntilNextLevel();

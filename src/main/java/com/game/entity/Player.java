@@ -133,6 +133,15 @@ public class Player {
     }
 
     public void computeUntilNextLevel() {
-        setUntilNextLevel ((int) (50 * (level + 1)*(level + 2) - experience));
+        setUntilNextLevel((int) (50 * (level + 1) * (level + 2) - experience));
+    }
+
+    public boolean isValid() {
+        return name != null && name.trim().length() > 0 && name.length() < 13
+                && title != null && title.length() < 31
+                && race != null
+                && profession != null
+                && birthday.getTime() >= 0
+                && experience >= 0 && experience <= 10_000_000L;
     }
 }
