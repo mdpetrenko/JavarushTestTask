@@ -12,10 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.Supplier;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
@@ -53,7 +51,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public Player saveOrUpdate(Player player) {
+    public Player createPlayer(Player player) {
         if (!player.isValid()) {
             throw new IllegalArgumentException();
         }
@@ -65,7 +63,39 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
+    public Player updatePlayer(Long id, Player updatedPlayer) {
+        Player player = findById(id);
+        if (updatedPlayer.getName() != null) {
+            player.setName(updatedPlayer.getName());
+        }
+        if (updatedPlayer.getTitle() != null) {
+            player.setTitle(updatedPlayer.getTitle());
+        }
+        if (updatedPlayer.getRace() != null) {
+            player.setRace(updatedPlayer.getRace());
+        }
+        if (updatedPlayer.getProfession() != null) {
+            player.setProfession(updatedPlayer.getProfession());
+        }
+        if (updatedPlayer.getBirthday() != null) {
+            player.setBirthday(updatedPlayer.getBirthday());
+        }
+        if (updatedPlayer.getBanned() != null) {
+            player.setBanned(updatedPlayer.getBanned());
+        }
+        if (updatedPlayer.getExperience() != null) {
+            player.setExperience(updatedPlayer.getExperience());
+            player.computeLevel();
+            player.computeUntilNextLevel();
+        }
+        return createPlayer(player);
+    }
+
+    @Override
     public void delete(Long id) {
+        if (id < 1) {
+            throw new NumberFormatException();
+        }
         playerRepository.deleteById(id);
     }
 

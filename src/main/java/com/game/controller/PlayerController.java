@@ -81,19 +81,17 @@ public class PlayerController {
 
     @PostMapping
     public Player createPlayer(@RequestBody Player player) {
-        return playerService.saveOrUpdate(player);
+        return playerService.createPlayer(player);
+    }
+
+    @PostMapping("/{id}")
+    public Player onUpdatePlayer(@PathVariable Long id, @RequestBody Player player) {
+        return playerService.updatePlayer(id, player);
     }
 
     @DeleteMapping("/{id}")
     public void removeById(@PathVariable Long id) {
-        if (id < 1) {
-            throw new NumberFormatException();
-        }
-        try {
-            playerService.delete(id);
-        } catch (Exception e) {
-            throw new NoSuchElementException();
-        }
+        playerService.delete(id);
     }
 
 }

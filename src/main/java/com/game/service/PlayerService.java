@@ -22,5 +22,7 @@ public interface PlayerService {
 
     void delete(Long id);
 
-    Player saveOrUpdate(Player player);
+    Player createPlayer(Player player);
+
+    Player updatePlayer(Long id, Player updatedPlayer);
 }
